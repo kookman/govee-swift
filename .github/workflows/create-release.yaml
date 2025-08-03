@@ -1,0 +1,32 @@
+name: Release Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build macOS Binary
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build for Apple Silicon
+        run: |
+          swift build -c release --arch arm64
+
+      - name: Package binary
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          mkdir -p release
+          cp .build/arm64-apple-macosx/release/govee-swift release/
+          tar -czf govee-swift-${VERSION}-macos-arm64.tar.gz -C release govee-swift
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: govee-swift-*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
