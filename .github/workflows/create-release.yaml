@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Build macOS Binary
@@ -27,11 +30,11 @@ jobs:
           VERSION=${GITHUB_REF#refs/tags/}
           mkdir -p release
           cp .build/arm64-apple-macosx/release/GoveeBLE release/
-          tar -czf govee-swift-${VERSION}-macos-arm64.tar.gz -C release GoveeBLE
+          tar -czf GoveeBLE-${VERSION}-macos-arm64.tar.gz -C release GoveeBLE
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: govee-swift-*.tar.gz
+          files: GoveeBLE-*.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
