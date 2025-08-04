@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     name: Build macOS Binary
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,8 +21,8 @@ jobs:
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
           mkdir -p release
-          cp .build/arm64-apple-macosx/release/govee-swift release/
-          tar -czf govee-swift-${VERSION}-macos-arm64.tar.gz -C release govee-swift
+          cp .build/arm64-apple-macosx/release/GoveeBLE release/
+          tar -czf govee-swift-${VERSION}-macos-arm64.tar.gz -C release GoveeBLE
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
